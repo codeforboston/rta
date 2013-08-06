@@ -25,6 +25,6 @@ rta.schedule(route[,cb]);
 	-> schedule of the route.
 ```
 
-It returns a promise so you can omit the callback if your into that. Also included is 'server.js' which can be run with `node server.js` and is a simple api endpoint setup with CORS and JSONP enabled.
+It returns a promise so you can omit the callback if you're into that.
 
 Not affiliated with the Next bus or any transit company. Inspired by [Tom MacWright](https://github.com/tmcw)'s [wmataapiapi](https://github.com/tmcw/wmataapiapi).
