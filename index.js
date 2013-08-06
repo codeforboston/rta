@@ -49,7 +49,7 @@ var parseDetails=function(raw){
 	});
 	out.paths = route.path.map(function(v){
 		return v.point.map(function(v){
-			return [v.$.lon,v.$.lat];
+			return [parseFloat(v.$.lon,10),parseFloat(v.$.lat,10)];
 		});
 	});
 	return out;
