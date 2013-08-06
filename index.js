@@ -8,6 +8,7 @@ var subways = {
 	blue:"http://developer.mbta.com/lib/rthr/blue.json"
 };
 function RTA(agency,ttl){
+ttl = ttl|10;
 function Cache(){
 	var cache = {};
 	this.check=function(code,def){

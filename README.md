@@ -11,6 +11,8 @@ npm install rta
 commands
 
 ```javascript
+var RTA = require('rta');
+var rta = new RTA(agency tag, seconds to cache(default is 10));
 rta.locations(route[,since,cb]);
 	->geojson from the bus GPS
 rta.stop(stop[,cb]);
