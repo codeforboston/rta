@@ -110,6 +110,21 @@ var parseSched=function(raw){
 		return out;
 	});
 }
+var parseStops = function(raw){
+	return {
+		type:"FeatureCollection",
+		features : raw.body.route[0].stop.map(function(stop){
+			return {
+				"properties":stop.$,
+				"type":"Feature",
+				"geometry":{
+					"type": "Point",
+					"coordinates": [parseFloat(stop.$.lon,10),parseFloat(stop.$.lat,10)]
+				}
+			}
+		})
+	}
+}
 var listCache = new Cache();
 this.list=function(cb){
 	var def = q.defer();
@@ -229,24 +244,33 @@ this.stop = function(stop,cb){
 	}
 	return def.promise;
 }
-var subwayCache = new Cache();
-this.subway = function(line,cb){
+var stopsCache = new Cache();
+this.stops = function(r,cb){
 	var def = q.defer();
 	if(cb){
 		def.promise.then(function(a){cb(null,a)},cb);
 	}
-	if(subwayCache.check(line,def)){
-		if(line in subways){
-			request({
-				url:subways[line],
-			},function(e,r,b){
-				if(e){
-					def.reject(e);
-				}else{
-					def.resolve(JSON.parse(b));
-				}
-			});
-		}
+	if(stopsCache.check(r,def)){
+		request({
+			url:busBase,
+			qs:{
+				command:"routeConfig",
+				a:agency,
+				r:r
+			}
+		},function(e,r,b){
+			if(e){
+				def.reject(e);
+			}else{
+				parser(b,function(err,result){
+					if(err||!result.body.route){
+						def.reject(err);
+					}else{
+						def.resolve(parseStops(result));
+					}
+				})
+			}
+		});
 	}
 	return def.promise;
 }
